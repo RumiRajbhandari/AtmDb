@@ -1,6 +1,7 @@
 package com.example.root.atmdatabase2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +25,16 @@ public class Main3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        AtmDetails atm=getIntent().getExtras().getParcelable("rumi");
+       // AtmDetails atm=getIntent().getExtras().getParcelable("rumi");
+       Intent mIntent = getIntent();
+        ArrayList<AtmDetails> mUsers = mIntent.getParcelableArrayListExtra("UniqueKey");
+        Toast.makeText(Main3Activity.this, "success", Toast.LENGTH_SHORT).show();
 
         list=(ListView)findViewById(R.id.listView);
 
 
-        RumiAdapter adapter=new RumiAdapter(this,atm);
-        list.setAdapter(adapter);
+       /* RumiAdapter adapter=new RumiAdapter(this,mUsers);
+        list.setAdapter(adapter);*/
     }
 }
 

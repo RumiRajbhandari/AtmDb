@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               List<AtmDetails> list=manager.listAtm();
+               ArrayList<AtmDetails> list=manager.listAtm();
                // AtmDetails list= manager.listAtm();
                /* Intent i=getIntent();
                 i.putStringArrayListExtra("text",(ArrayList<String>list);
@@ -71,9 +71,13 @@ public class MainActivity extends AppCompatActivity{
                     // Writing Contacts to log
                     Log.d("Name: ", log);}*/
 
-                Intent intent=new Intent(getBaseContext(),Main3Activity.class);
+               /* Intent intent=new Intent(getBaseContext(),Main3Activity.class);
                 intent.putExtra("rumi", (ArrayList<AtmDetails>) list);
-                startActivity(intent);
+                startActivity(intent);*/
+
+                Intent mIntent = new Intent(MainActivity.this, Main3Activity.class);
+                mIntent.putParcelableArrayListExtra("UniqueKey", list);
+                startActivity(mIntent);
 
             }
         });

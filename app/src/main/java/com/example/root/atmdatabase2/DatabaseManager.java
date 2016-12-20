@@ -28,9 +28,9 @@ public class DatabaseManager {
         db.insert(AtmContract.AtmEntry.TABLE_NAME, null, values);
         //db.close(); // Closing database connection
     }
-    public List<AtmDetails> listAtm(){
+    public ArrayList<AtmDetails> listAtm(){
         //String[] list=new String[];
-        List<AtmDetails> list=new ArrayList<>();
+        ArrayList<AtmDetails> list=new ArrayList<>();
 
 
 
