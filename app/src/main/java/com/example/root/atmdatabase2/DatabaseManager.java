@@ -3,6 +3,7 @@ package com.example.root.atmdatabase2;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,13 @@ import java.util.List;
  * Created by root on 12/17/16.
  */
 public class DatabaseManager {
-    private SQLiteDatabase db;
 
-    public DatabaseManager(SQLiteDatabase db){this.db=db;}
+    private SQLiteDatabase db;
+    private static final String TAG = "DatabaseManager";
+
+    public DatabaseManager(SQLiteDatabase db) {
+        this.db = db;
+    }
 
     void addAtm(AtmDetails atm) {
 
@@ -25,37 +30,25 @@ public class DatabaseManager {
         values.put(AtmContract.AtmEntry.COLUMN_STATUS, atm.getStatus());
 
         // Inserting Row
-        db.insert(AtmContract.AtmEntry.TABLE_NAME, null, values);
+        long id = db.insert(AtmContract.AtmEntry.TABLE_NAME, null, values);
+        Log.e(TAG, "addAtm: " + id);
         //db.close(); // Closing database connection
     }
-    public ArrayList<AtmDetails> listAtm(){
-        //String[] list=new String[];
-        ArrayList<AtmDetails> list=new ArrayList<>();
 
+    public List<AtmDetails> listAtm() {
 
+        List<AtmDetails> list = new ArrayList<>();
 
-
-
-        Cursor cursor=db.query(AtmContract.AtmEntry.TABLE_NAME,AtmContract.AtmEntry.ALL_COLUMNS,null, null, null, null, null);
+        Cursor cursor = db.query(AtmContract.AtmEntry.TABLE_NAME, AtmContract.AtmEntry.ALL_COLUMNS, null, null, null, null, null);
         cursor.moveToFirst();
-        while (cursor.moveToNext()){
-            AtmDetails atm=new AtmDetails();
-            /*int bankid=cursor.getInt(0);
-            atm.setBankId(bankid);
-            int atmid=cursor.getInt(1);
-            atm.setAtmId(atmid);
-            double lat=cursor.getDouble(2);
-            atm.setLat(lat);
-            double lon=cursor.getDouble(3);
-            atm.setLat(lon);
-            int status=cursor.getInt(4);
-            atm.setStatus(status);*/
+        while (cursor.moveToNext()) {
+            AtmDetails atm = new AtmDetails();
 
-            int atmid= cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry._ID));
-            int bankid=cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_BANKID));
-            double lat=cursor.getDouble(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_LAT));
-            double lon=cursor.getDouble(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_LON));
-            int status=cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_STATUS));
+            int atmid = cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry._ID));
+            int bankid = cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_BANKID));
+            double lat = cursor.getDouble(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_LAT));
+            double lon = cursor.getDouble(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_LON));
+            int status = cursor.getInt(cursor.getColumnIndex(AtmContract.AtmEntry.COLUMN_STATUS));
 
             atm.setAtmId(atmid);
             atm.setBankId(bankid);
@@ -63,23 +56,16 @@ public class DatabaseManager {
             atm.setLon(lon);
             atm.setStatus(status);
 
+            Log.e(TAG, "listAtm(cursor): " + atm.getAtmId());
 
-            //list.add(i,atm);
-            //i++;
             list.add(atm);
-
-
-            // buffer.append(bankid+" "+atmid+" "+lat+" "+lon+" "+status+"\n");
-            //buffer.append(" "+atmid+"\n");
-
         }
 
-        //return buffer.toString();
-       // cursor.close();
+        // always close cursor
+        cursor.close();
         return list;
 
     }
-
 
 
     // Updating single contact
@@ -94,13 +80,14 @@ public class DatabaseManager {
 
         // updating row
         return db.update(AtmContract.AtmEntry.TABLE_NAME, values, AtmContract.AtmEntry._ID + " = ?",
-                new String[] { String.valueOf(atm.getAtmId()) });
+                new String[]{String.valueOf(atm.getAtmId())});
     }
 
     // Deleting single contact
-    public int deleteAtm() {
+    public int deleteAtm(int auditId) {
 
-        int count=db.delete(AtmContract.AtmEntry.TABLE_NAME,null,null);
+        int count = db.delete(AtmContract.AtmEntry.TABLE_NAME,
+                AtmContract.AtmEntry._ID + " =? ", new String[]{String.valueOf(auditId)});
         db.close();
         return count;
     }

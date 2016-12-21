@@ -1,27 +1,22 @@
 package com.example.root.atmdatabase2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+
     Button add, update, delete, list;
-    EditText bankId, lat, lon, status,edit;
+    EditText bankId, lat, lon, status, edit;
     DatabaseHandler db;
     private RecyclerView recyclerView;
 
@@ -30,24 +25,26 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        add=(Button)findViewById(R.id.add);
-        update=(Button)findViewById(R.id.update);
-        delete=(Button)findViewById(R.id.delete);
-        list=(Button)findViewById(R.id.list);
+        add = (Button) findViewById(R.id.add);
+        update = (Button) findViewById(R.id.update);
+        delete = (Button) findViewById(R.id.delete);
+        list = (Button) findViewById(R.id.list);
 
-        bankId=(EditText)findViewById(R.id.bankId);
-        lat=(EditText)findViewById(R.id.lat);
-        lon=(EditText)findViewById(R.id.lon);
-        status=(EditText)findViewById(R.id.status);
-        edit=(EditText)findViewById(R.id.edit);
+        // use edittext's hint
+        // also using edittext's input type
+        bankId = (EditText) findViewById(R.id.bank_id);
+        lat = (EditText) findViewById(R.id.bank_lat);
+        lon = (EditText) findViewById(R.id.bank_lon);
+        status = (EditText) findViewById(R.id.bank_status);
+        edit = (EditText) findViewById(R.id.edit);
 
         db = new DatabaseHandler(this);
-        final DatabaseManager manager=new DatabaseManager(db.getWritableDatabase());
+        final DatabaseManager manager = new DatabaseManager(db.getWritableDatabase());
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AtmDetails atm=new AtmDetails();
+                AtmDetails atm = new AtmDetails();
 
                 atm.setBankId(Integer.parseInt(bankId.getText().toString()));
                 atm.setLat(Double.parseDouble(lat.getText().toString()));
@@ -60,35 +57,28 @@ public class MainActivity extends AppCompatActivity{
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ArrayList<AtmDetails> list=manager.listAtm();
-               // AtmDetails list= manager.listAtm();
-               /* Intent i=getIntent();
-                i.putStringArrayListExtra("text",(ArrayList<String>list);
-                startActivity(i);*/
-                //Toast.makeText(MainActivity.this, ""+display, Toast.LENGTH_SHORT).show();
-                for (AtmDetails am : list) {
-                    String log = "AtmId: "+am.getAtmId()+" ,BankId: " + am.getBankId() + " ,Latitude: " + am.getLat()+ " ,Longitude: " + am.getLon()+ " ,Status: " + am.getStatus();
-                    // Writing Contacts to log
-                    Log.d("Name: ", log);}
-                //Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
 
-               /* Intent intent=new Intent(getBaseContext(),Main3Activity.class);
-                intent.putExtra("rumi", (ArrayList<AtmDetails>) list);
-                startActivity(intent);*/
+                // todo add is cursor empty check
 
-                Intent mIntent = new Intent(MainActivity.this, Main3Activity.class);
-                mIntent.putParcelableArrayListExtra("UniqueKey", list);
-                startActivity(mIntent);
+                List<AtmDetails> list = manager.listAtm();
+
+                Intent intent = new Intent(getApplicationContext(), Main3Activity.class);
+                // replaced key with static constant
+                intent.putParcelableArrayListExtra(AtmDetails.KEY_ATM_DETAILS, (ArrayList<? extends Parcelable>) list);
+                startActivity(intent);
 
             }
         });
 
+        // update to include id deletion
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count=manager.deleteAtm();
-                Toast.makeText(MainActivity.this, ""+count, Toast.LENGTH_SHORT).show();
 
+                // todo empty check if input is null
+
+                int count = manager.deleteAtm(Integer.parseInt(edit.getText().toString()));
+                Toast.makeText(MainActivity.this, "" + count, Toast.LENGTH_SHORT).show();
             }
         });
 

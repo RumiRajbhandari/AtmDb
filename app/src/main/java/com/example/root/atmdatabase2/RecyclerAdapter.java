@@ -47,11 +47,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         public RecyclerViewHolder(View view){
             super(view);
-            bankId1=(TextView)view.findViewById(R.id.bankId);
-            atmId1=(TextView)view.findViewById(R.id.atmId);
-            status1=(TextView)view.findViewById(R.id.status);
-            lat1=(TextView) view.findViewById(R.id.lat);
-            lon1=(TextView)view.findViewById(R.id.lon);
+            bankId1=(TextView)view.findViewById(R.id.bank_id);
+            atmId1=(TextView)view.findViewById(R.id.atm_id);
+            status1=(TextView)view.findViewById(R.id.bank_status);
+            lat1=(TextView) view.findViewById(R.id.bank_lat);
+            lon1=(TextView)view.findViewById(R.id.bank_lon);
         }
     }
     }

@@ -17,7 +17,6 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 
-
     public DatabaseHandler(Context context) {
         super(context, AtmContract.AtmEntry.DATABASE_NAME, null, AtmContract.AtmEntry.DATABASE_VERSION);
     }
@@ -25,26 +24,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-       // String CREATE_TABLE_ATM="CREATE TABLE ATM(atmId INTEGER PRIMARY KEY, bankId INTEGER, lat DOUBLE, lon DOUBLE, status INTEGER)";
+        // String CREATE_TABLE_ATM="CREATE TABLE ATM(atmId INTEGER PRIMARY KEY, bankId INTEGER, lat DOUBLE, lon DOUBLE, status INTEGER)";
         //db.execSQL(CREATE_TABLE_ATM);
+        // nice!!! ^_^ Great work here Rumi :D
         db.execSQL(getCreateQuery(AtmContract.AtmEntry.TABLE_NAME, AtmContract.AtmEntry.COLUMN_METADATA()));
-
-
-
     }
 
-    public String getCreateQuery(String tableName, String[] columnMetaData){
-        StringBuilder builder=new StringBuilder();
-        String intialQ="CREATE TABLE " + tableName +" (";
+    public String getCreateQuery(String tableName, String[] columnMetaData) {
+        StringBuilder builder = new StringBuilder();
+        String intialQ = "CREATE TABLE " + tableName + " (";
         builder.append(intialQ);
-        builder.append(TextUtils.join(", ",columnMetaData));
+        builder.append(TextUtils.join(", ", columnMetaData));
         builder.append(")");
         return builder.toString();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS ATM" );
+        db.execSQL("DROP TABLE IF EXISTS ATM");
         onCreate(db);
     }
 
