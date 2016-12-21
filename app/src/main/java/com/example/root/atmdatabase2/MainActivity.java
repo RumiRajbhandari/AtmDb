@@ -66,10 +66,11 @@ public class MainActivity extends AppCompatActivity{
                 i.putStringArrayListExtra("text",(ArrayList<String>list);
                 startActivity(i);*/
                 //Toast.makeText(MainActivity.this, ""+display, Toast.LENGTH_SHORT).show();
-                /*for (AtmDetails am : list) {
+                for (AtmDetails am : list) {
                     String log = "AtmId: "+am.getAtmId()+" ,BankId: " + am.getBankId() + " ,Latitude: " + am.getLat()+ " ,Longitude: " + am.getLon()+ " ,Status: " + am.getStatus();
                     // Writing Contacts to log
-                    Log.d("Name: ", log);}*/
+                    Log.d("Name: ", log);}
+                //Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
 
                /* Intent intent=new Intent(getBaseContext(),Main3Activity.class);
                 intent.putExtra("rumi", (ArrayList<AtmDetails>) list);
