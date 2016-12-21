@@ -7,53 +7,65 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.root.atmdatabase.MainActivity">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <EditText
+        android:id="@+id/bank_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bankId"
-        android:text="BankId"/>
+        android:hint="BankId"
+        android:inputType="number" />
+
     <EditText
+        android:id="@+id/bank_lat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lat"
-        android:text="Latitude"/>
+        android:hint="Latitude"
+        android:inputType="number" />
+
     <EditText
+        android:id="@+id/bank_lon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lon"
-        android:text="Longitute"/>
+        android:hint="Longitute"
+        android:inputType="number" />
+
     <EditText
+        android:id="@+id/bank_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/status"
-        android:text="Status"/>
+        android:hint="Status"
+        android:inputType="number" />
+
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/add"
-        android:text="Add"/>
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Add" />
+
+    <Button
         android:id="@+id/list"
-        android:text="List"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List" />
+
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/edit"
-        android:text="AtmId"/>
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="AtmId"
+        android:inputType="number" />
+
+    <Button
         android:id="@+id/update"
-        android:text="update"/>
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="update" />
+
+    <Button
         android:id="@+id/delete"
-        android:text="delete"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="delete" />
 
 </LinearLayout>

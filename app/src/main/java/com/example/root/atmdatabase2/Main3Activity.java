@@ -1,113 +1,94 @@
 package com.example.root.atmdatabase2;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main3Activity extends AppCompatActivity {
-    ListView list;
 
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-       // AtmDetails atm=getIntent().getExtras().getParcelable("rumi");
-        list=(ListView)findViewById(R.id.listView);
-       Intent mIntent = getIntent();
-        ArrayList<AtmDetails> atm = mIntent.getParcelableArrayListExtra("UniqueKey");
-        System.out.println(atm.isEmpty());
-        //Toast.makeText(Main3Activity.this, "success", Toast.LENGTH_SHORT).show();
+//        AtmDetails atm = getIntent().getExtras().getParcelable(AtmDetails.KEY_ATM_DETAILS);
+        // since our list adapter is expecting a list of objects and also since we are
+        // sending a list of objects to this activity, we shall fetch a list of objects
+        list = (ListView) findViewById(R.id.listView);
 
-
-
-
-        RumiAdapter adapter=new RumiAdapter(this,atm);
+        List<AtmDetails> atmList = getIntent().getExtras().getParcelableArrayList(AtmDetails.KEY_ATM_DETAILS);
+        RumiAdapter adapter = new RumiAdapter(this, atmList);
         list.setAdapter(adapter);
     }
 
+
+    //    public class RumiAdapter extends ArrayAdapter<String> {
+// We are creating a list of AtmDetails here
+    public class RumiAdapter extends ArrayAdapter<AtmDetails> {
+
+        private static final String TAG = "DEBUG";
+        Context context;
+
+        RumiAdapter(Context c, List<AtmDetails> atmList) {
+            super(c, R.layout.single_row, 0, atmList);
+            this.context = c;
+        }
+
+        class MyViewHolder {
+
+            TextView bankId, atmId, lat, lon, status;
+
+            MyViewHolder(View view) {
+                // great work here :) initializing everything in the constructor
+                // kudos!
+                bankId = (TextView) view.findViewById(R.id.bank_id);
+                atmId = (TextView) view.findViewById(R.id.atm_id);
+                lat = (TextView) view.findViewById(R.id.bank_lat);
+                lon = (TextView) view.findViewById(R.id.bank_lon);
+                status = (TextView) view.findViewById(R.id.bank_status);
+            }
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            MyViewHolder holder;
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.single_row, parent, false);
+                holder = new MyViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (MyViewHolder) convertView.getTag();
+            }
+
+            // fetch atm details
+            AtmDetails details = getItem(position);
+            Log.e(TAG, "getView: " + details);
+
+            // using String.format to initialize text rather than string concat
+            // for more refer to https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html
+            holder.bankId.setText(String.format("Bank id: %s", String.valueOf(details.getBankId())));
+            holder.atmId.setText(String.format("Atm id: %s", String.valueOf(details.getAtmId())));
+            holder.lat.setText(String.format("Bank lat: %s", String.valueOf(details.getLat())));
+            holder.lon.setText(String.format("Bank lon: %s", String.valueOf(details.getLon())));
+            holder.status.setText(String.format("Bank status: %s", String.valueOf(details.getStatus())));
+            return convertView;
+        }
+    }
 }
 
-class RumiAdapter extends ArrayAdapter<AtmDetails>
-{
-    Context context;
-    ArrayList<AtmDetails> atm;
-    private static LayoutInflater inflater=null;
-    int atmId, bankId,status;
-    Double lat, lon;
-    RumiAdapter(Context c, ArrayList<AtmDetails> atm){
-        super(c,R.layout.single_row,R.id.atmId,  atm);
-        this.context=c;
-        this.atm=atm;
-        inflater=(LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-       /* this.bankId=atm.getBankId();
-        this.lat=atm.getLat();
-        this.lon=atm.getLon();
-        this.status=atm.getStatus();*/
-    }
 
-    public int getCount(){
-        return atm.size();
-    }
-
-    public AtmDetails getItem(AtmDetails atm){
-        return atm;
-    }
-    public long getItemId(int position){
-        return position;
-    }
-    class MyViewHolder
-    {
-        TextView bankId, atmId, lat, lon, status;
-
-
-        MyViewHolder(View view)
-        {
-            bankId=(TextView)view.findViewById(R.id.bankId);
-            atmId=(TextView)view.findViewById(R.id.atmId);
-            lat=(TextView)view.findViewById(R.id.lat);
-            lon=(TextView)view.findViewById(R.id.lon);
-            status=(TextView)view.findViewById(R.id.status);
-        }
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row=convertView;
-        MyViewHolder holder=null;
-        if(row==null)
-        {
-            LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row=inflater.inflate(R.layout.single_row,parent,false);
-            holder=new MyViewHolder(row);
-            row.setTag(holder);
-        }
-        else
-        {
-            holder=(MyViewHolder)row.getTag();
-        }
-
-        holder.bankId.setText(String.valueOf(atm.get(position).getAtmId()));
-        holder.atmId.setText(String.valueOf(atm.get(position).getBankId()));
-        holder.lat.setText(Double.toString( atm.get(position).getLat()));
-        holder.lon.setText(Double.toString( atm.get(position).getLon()));
-        holder.status.setText(String.valueOf(atm.get(position).getStatus()));
-
-        return row;
-    }
-}
 
 

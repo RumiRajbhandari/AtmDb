@@ -3,34 +3,37 @@ package com.example.root.atmdatabase2;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by root on 12/14/16.
  */
 public class AtmDetails implements Parcelable {
+
+    public static final String KEY_ATM_DETAILS = "key_atm_details";
+
     int atmId;
     int bankId;
     double lat;
     double lon;
     int status;
 
-    public AtmDetails(){
+    public AtmDetails() {
 
     }
-    public AtmDetails(int atmId, int bankId, double lat, double lon, int status){
-        this.atmId=atmId;
-        this.bankId=bankId;
-        this.lat=lat;
-        this.lon=lon;
-        this.status=status;
-    }
-    public AtmDetails(int bankId, double lat, double lon,int status){
 
-        this.bankId=bankId;
-        this.lat=lat;
-        this.lon=lon;
-        this.status=status;
+    public AtmDetails(int atmId, int bankId, double lat, double lon, int status) {
+        this.atmId = atmId;
+        this.bankId = bankId;
+        this.lat = lat;
+        this.lon = lon;
+        this.status = status;
+    }
+
+    public AtmDetails(int bankId, double lat, double lon, int status) {
+
+        this.bankId = bankId;
+        this.lat = lat;
+        this.lon = lon;
+        this.status = status;
 
     }
 
@@ -46,35 +49,43 @@ public class AtmDetails implements Parcelable {
         }
     };
 
-    public void setAtmId(int atmId){
-        this.atmId=atmId;
+    public void setAtmId(int atmId) {
+        this.atmId = atmId;
     }
-    public void setBankId(int bankId){
-        this.bankId=bankId;
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
-    public void setLat(double lat)
-    {
-        this.lat=lat;
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
-    public void setLon(double lon){
-        this.lon=lon;
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
-    public void setStatus(int status){
-        this.status=status;
+
+    public void setStatus(int status) {
+        this.status = status;
     }
-    public int getAtmId(){
+
+    public int getAtmId() {
         return this.atmId;
     }
-    public int getBankId(){
+
+    public int getBankId() {
         return this.bankId;
     }
-    public double getLat(){
+
+    public double getLat() {
         return this.lat;
     }
-    public double getLon(){
+
+    public double getLon() {
         return this.lon;
     }
-    public int getStatus(){
+
+    public int getStatus() {
         return this.status;
     }
 
@@ -92,7 +103,8 @@ public class AtmDetails implements Parcelable {
         dest.writeInt(status);
 
     }
-    public static final Parcelable.Creator<AtmDetails> myContract= new Creator<AtmDetails>() {
+
+    public static final Creator<AtmDetails> myContract = new Creator<AtmDetails>() {
         @Override
         public AtmDetails createFromParcel(Parcel source) {
             return new AtmDetails(source);
@@ -103,11 +115,12 @@ public class AtmDetails implements Parcelable {
             return new AtmDetails[size];
         }
     };
-    public AtmDetails(Parcel source){
-        atmId=source.readInt();
-        bankId=source.readInt();
-        lat=source.readDouble();
-        lon=source.readDouble();
-        status=source.readInt();
+
+    public AtmDetails(Parcel source) {
+        atmId = source.readInt();
+        bankId = source.readInt();
+        lat = source.readDouble();
+        lon = source.readDouble();
+        status = source.readInt();
     }
 }
